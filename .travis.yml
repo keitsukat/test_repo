@@ -1,4 +1,2 @@
-language: perl
-perl:
-  - "5.18"
-  - "5.16"
+before_script:
+  - bundle exec danger
