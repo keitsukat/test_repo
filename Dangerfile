@@ -12,4 +12,37 @@
 #fail("fdescribe left in tests") if `grep -r fdescribe specs/ `.length > 1
 #fail("fit left in tests") if `grep -r fit specs/ `.length > 1
 
-warn('あぶないよー！')
+# --------------------
+# test
+# --------------------
+is_source_changed = !git.modified_files.grep(/^mamariQ\/Classes/).empty?
+is_test_changed = !git.modified_files.grep(/^mamariQTests\/Case/).empty?
+
+if is_source_changed && !is_test_changed
+  warn('コードの変更がありますが、テストの変更がありません。必要であればテストを追加・修正しましょう。')
+end
+
+# --------------------
+# pr title
+# --------------------
+is_wip = github.pr_title.include? '[WIP]'
+
+if is_wip
+  warn('このPRは作業中です。')
+end
+
+is_to_develop = github.branch_for_base == 'develop'
+is_start_with_issue_id = !!github.pr_title.match(/^#[0-9]+/)
+
+if is_to_develop && !is_start_with_issue_id && !is_wip
+  warn('PRのタイトルは<b>「#XXX Foo bar...」</b>とIssue idから始めてください。')
+end
+
+# --------------------
+# diff size
+# --------------------
+is_big_pr = git.lines_of_code > 5
+
+if is_big_pr
+  warn('PRの変更量が多すぎます。可能であればPRを分割しましょう。分割が難しければ次から気をつけるようにしましょう。')
+end
