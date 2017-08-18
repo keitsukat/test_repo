@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-my $a = 2;
+my $a = 0;
 print "Hello World\n";
 
 exit 0;
