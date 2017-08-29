@@ -46,3 +46,5 @@ is_big_pr = git.lines_of_code > 5
 if is_big_pr
   warn('PRの変更量が多すぎます。可能であればPRを分割しましょう。分割が難しければ次から気をつけるようにしましょう。')
 end
+
+warn('自動テストは動かしたよね？')
